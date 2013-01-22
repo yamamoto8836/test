@@ -5,8 +5,8 @@
  * update date :
  */
  require("loginTable.php");
- echo "xx";
  $a = new loginTbl();
  $a->set_item($a->_name, "yyyy");
- echo $a->name;
+ echo "<br>-". $a->get_item($a->_name);
+ echo "<br>-". date("yyyy/mm/dd hh", $a->get_item($a->_pass));
 ?>

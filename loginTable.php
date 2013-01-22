@@ -11,29 +11,33 @@ class LoginTbl{
 	public $_name = "name";
 	public $_pass = "pass";
 
-	private $item_init = array();
-//public $name = null;
-//public $pass = null;
+	private $item_list = array();
+    private $name = null;
+    private $pass = null;
+
 
 	function __construct(){
-		$this->item_init[$this->_name] = null;
-		$this->item_init[$this->_pass] = null;
+		$this->item_list["name"] = null;
+		$this->item_list["pass"] = null;
 
-		$this->init_item();
-	}
+		foreach($this->item_list as $var => $value){
+			$w = "_" . $var;
 
-	function init_item(){
-		foreach($this->item_init as $key => $val){
-			global $$key;
+			global $$w;
 
-			$$key = $val;
+			$$w = $var;
 		}
+		$this->init_items();
 	}
 
-	function zz(){
-		global $z;
-		//echo "zz";
-		return $z;
+	function init_items(){
+		foreach($this->item_list as $var => $value){
+			if (is_array($value)){
+				$this->$var = $value[0]($value[1]);
+			}else{
+				$this->$var = $value;
+			}
+		}
 	}
 
 	function get_item($item){
@@ -49,20 +53,6 @@ class LoginTbl{
 			set_item($key, $val);
 		}
 	}
-
-
-/*function set_item($item){
-	$w = "this";
-	$this->name = $name;
-}
-function insert($db, $item){
-	$sql = "";
-	$sql2 = "";
-	forEach($item as $key=>$val){
-		$sql .= $key;
-		$sql2 .= $db->conn->dbquote
-	$sql = "INSERT INTO $this->_table_name($this->_login_name, $this->_login_pass) values
-}*/
 
 }
 
