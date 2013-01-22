@@ -1,6 +1,4 @@
 <?php
-
-
 /*
  * Author : yamamoto
  * create date : 2013/01/21
@@ -10,28 +8,40 @@
 class pdo {
 	private $conn  = null;
 	private $count = 0;
-	private $error = null;
+	private $exception = null;
 
-	function __constract($dns) {
+	function __constract($dns, $user, $pass) {
 		$dnsstring = "$dns['dbtype']:host=$dns['host'];dbname=$dns['dbname']";
 		try {
-			$this->conn = new PDO($dnsstring, $dns["user"], $dns["password"], array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
+			$this->conn = new PDO($dnsstring, $user, $pass, array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
 			$this->conn->exec("SET NAMES $dns['charset']");
 			$this->conn->setAttribute(PDO :: ATTR_CASE, PDO :: CASE_LOWER);
 		} catch (Exception $e) {
 			$this->conn = null;
-			$this->error = $e;
+			$this->exception = $e;
 		}
 	}
 
+	function getConn(){
+		return $this->conn;
+	}
+
+	function getCount(){
+		return $this->count;
+	}
+
+	function getError(){
+		return $this->exception;
+	}
+
 	function query($sql) {
-		$this->error = null;
+		$this->exception = null;
 		try{
 			$result = $this->conn->query($sql);
 			$this->count = count($result);
 			return $result;
 		}catch(Exception $e){
-			$this->error = $e;
+			$this->exception = $e;
 			$this->count = -1;
 			return false;
 		}
@@ -41,12 +51,12 @@ class pdo {
 
 	function prepare($sql){
 		// 成功したらPDOStatementオブジェクト、失敗したらFALSEを返す
-		$this->error = null;
+		$this->exception = null;
 
 		try{
 			return  $this->prepare($sql);
 		}catch(Exception $e){
-			$this->error = $e;
+			$this->exception = $e;
 			$this->count = -1;
 			return false;
 		}
@@ -54,7 +64,7 @@ class pdo {
 
 	function execute($prepare, $param){
 		// 成功したら結果セットまたはPDOStatementオブジェクト、失敗したらFALSEを返す
-		$this->error = null;
+		$this->exception = null;
 
 		try{
 			$prepare->execute($param);
@@ -65,7 +75,7 @@ class pdo {
 			}
 			return $prepare;
 		}catch(Exception $e){
-			$this->error = $e;
+			$this->exception = $e;
 			$this->count = -1;
 			return false;
 		}
