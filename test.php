@@ -19,9 +19,9 @@
 		return;
 	}
 
-	$login->set_item($_login_name, "x1234567");
-	$login->set_item($_login_pass, "abcdef");
-	if ($login->insert($db, array($_login_name, $_login_pass))){
+	$login->set_item(_login_name, "x1234567");
+	$login->set_item(_login_pass, "abcdef");
+	if ($login->insert($db, array(_login_name, _login_pass))){
 		print_r($db->get_exception());
 	}else{
 		print_r($db->get_errorInfo());

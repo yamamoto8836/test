@@ -15,17 +15,9 @@ class LoginTable{
     private $name = null;
     private $pass = null;
 
-
 	function __construct(){
 		$this->item_list = compact($this->name, $this->pass);
 
-		foreach($this->item_list as $var => $value){
-			$w = "_" . $this->_table_name . "_" . $var;
-
-			global $$w;
-
-			$$w = $var;
-		}
 		$this->init_items();
 	}
 
@@ -59,7 +51,7 @@ class LoginTable{
 			$values[":".$val] = $this->$val;
 		}
 
-		$sql = "INSERT INTO $this->_table_name (" . impload($items) . ") value (" . impload(array_keys($values)) . ")";
+		$sql = "INSERT INTO $this->_table_name (" . implode($items) . ") value (" . implode(array_keys($values)) . ")";
 
 		return $db->insert($sql, $values);
 	}

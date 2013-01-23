@@ -17,4 +17,8 @@ define("_pdo_host" , "localhost");
 define("_pdo_dbname", "test");
 define("_pdo_charset", "utf8");
 
+//login table
+define("_login_name", "name");
+define("_login_pass" , "pass");
+
 ?>

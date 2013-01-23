@@ -8,10 +8,10 @@
 */
 
 class DB {
-	public $conn = null;
+	private $conn = null;
 	private $count = -1;
 	private $exception = null;
-	public $errorInfo = null;
+	private $errorInfo = null;
 
 	function __construct($dbtype, $host, $dbname, $charset, $user, $pass) {
 		$this->clear_error();
@@ -63,7 +63,7 @@ class DB {
 		$this->clear_error();
 
 		try {
-			return $this->prepare($sql);
+			return $this->conn->prepare($sql);
 		} catch (Exception $e) {
 			$this->set_error($e);
 			return false;
