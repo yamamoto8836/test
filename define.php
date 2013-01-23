@@ -16,12 +16,6 @@ $_dns = array();
 $_dns["dbtype"] = "mysql";
 $_dns["host"] = "localhost";
 $_dns["dbname"] = "test";
-$_dns["user"] = _readUser;
-$_dns["password"] = _readUserPass;
 $_dns["charset"] = "utf8";
-//login table
-$_login_name = "name";
-$_login_pass = "pass";
-
 
 ?>
