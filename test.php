@@ -12,8 +12,9 @@
 	}
 
 	$login = new LoginTable();
-	$db = new Pdo($_dns, _writeUser, _writeUserPass);
-	if ($db->get_conn() === null){
+	$db = new DB(_pdo_dbtype, _pdo_host, _pdo_dbname, _pdo_charset, _pdo_writeUser, _pdo_writeUserPass);
+	print_r($db->errorInfo);
+	if ($db->conn === null){
 		echo "open error";
 		return;
 	}

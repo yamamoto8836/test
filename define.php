@@ -6,16 +6,15 @@
 */
 //DataBase
 //User
-define("_readUser", "reader");
-define("_readUserPass", "reader");
-define("_writeUser", "writer");
-define("_writeUserPass", "writer");
+define("_pdo_readUser", "reader");
+define("_pdo_readUserPass", "reader");
+define("_pdo_writeUser", "writer");
+define("_pdo_writeUserPass", "writer");
 
 //DNS
-$_dns = array();
-$_dns["dbtype"] = "mysql";
-$_dns["host"] = "localhost";
-$_dns["dbname"] = "test";
-$_dns["charset"] = "utf8";
+define("_pdo_dbtype", "mysql");
+define("_pdo_host" , "localhost");
+define("_pdo_dbname", "test");
+define("_pdo_charset", "utf8");
 
 ?>
