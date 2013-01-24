@@ -4,6 +4,11 @@
  * create date : 2013/01/22
  * update date :
 */
+
+function __autoload($class_name) {
+   	include $class_name . '.php';
+}
+
 //DataBase
 //User
 define("_pdo_readUser", "reader");
@@ -20,5 +25,9 @@ define("_pdo_charset", "utf8");
 //login table
 define("_login_name", "name");
 define("_login_pass" , "pass");
+
+
+
+//
 
 ?>

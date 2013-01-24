@@ -51,7 +51,7 @@ class LoginTable{
 			$values[":".$val] = $this->$val;
 		}
 
-		$sql = "INSERT INTO $this->_table_name (" . implode($items) . ") value (" . implode(array_keys($values)) . ")";
+		$sql = "INSERT INTO $this->_table_name (" . implode($items, ",") . ") value (" . implode(array_keys($values), ",") . ")";
 
 		return $db->insert($sql, $values);
 	}

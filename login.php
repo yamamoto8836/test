@@ -27,44 +27,39 @@
 
 		$sql = "select * from login where name = '$name' and pass = '$pass'";
 		$result = $db->query($sql);
+
 		$errmsg[] = $sql;
-		if ($result === false || count($result) == 0){
-			$errmsg[] = "登録されていない名前またはパスワードです";
+		if ($result === false || $result->columnCount() == 0){
+			$errmsg[] = "登録されていないログイン名またはパスワードです";
 			break;
 		}
-		$post = true;
+		$db = null;
+		require_once("success.php");
+		return;
 	}
-
-	$db = null;
 ?>
 
+<!DOCTYPE html>
 <meta charset="utf-8">
-<?php
-	if ($post){
-		echo "<p>" , $name , "さん、いらっしゃい</p>", $errmsg[0];
-		echo "<p><a href='", $_SERVER["SCRIPT_NAME"] , "'>ログアウト</a></p>";
-	}else{
-?>
-		<title>ログイン入力</title>
-		<style>
-			.err {color:red;}
-		</style>
+<title>ログイン入力</title>
+<style>
+	.err {color:red;}
+</style>
 
-		<div class="err">
-			<?php
-				foreach($errmsg as $val){
-					echo $val, "<br>";
-				}
-			?>
-		</div>
+<h1>ログイン</h1>
 
-		<form action ='<?= $_SERVER["SCRIPT_NAME"] ?>' method="POST">
-			<div>
-				<p>ログインID<input type="text" name="name" value='<?= $name ?>' size=10></p>
-				<p>パスワード<input type="password" name="pass" value='' size=10></p>
-				<p><input type="submit" value="ログイン"></p>
-			</div>
-		</form>
-<?php
-	}
-?>
+<div class="err">
+	<?php
+		foreach($errmsg as $val){
+			echo $val, "<br>";
+		}
+	?>
+</div>
+<form action ='<?= $_SERVER["SCRIPT_NAME"] ?>' method="POST">
+	<div>
+		<p>ユーザ名：<input type="text" name="name" value='<?= $name ?>' size=10></p>
+		<p>パスワード：<input type="password" name="pass" value='' size=10></p>
+		<p><input type="submit" value="ログイン"></p>
+	</div>
+</form>
+<p>ユーザ登録がまだの方はこちら <a href="newuser.php"><button> 会員登録 </button></a></p>

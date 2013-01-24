@@ -1,3 +1,5 @@
+<!DOCTYPE html>
+<meta charset="UTF-8">
 <?php
 /*
  * Author : yamamoto
@@ -7,23 +9,28 @@
 
 	require_once("define.php");
 
-	function __autoload($class_name) {
-    	include $class_name . '.php';
-	}
-
 	$login = new LoginTable();
 	$db = new DB(_pdo_dbtype, _pdo_host, _pdo_dbname, _pdo_charset, _pdo_writeUser, _pdo_writeUserPass);
-	print_r($db->errorInfo);
-	if ($db->conn === null){
+	if ($db->get_conn() === null){
 		echo "open error";
 		return;
 	}
 
-	$login->set_item(_login_name, "x1234567");
-	$login->set_item(_login_pass, "abcdef");
+
+	$login->set_item(_login_name, "a1234567");
+
+	$login->set_item(_login_pass, "abcde");
+
 	if ($login->insert($db, array(_login_name, _login_pass))){
-		print_r($db->get_exception());
+		echo "追加しました";
 	}else{
-		print_r($db->get_errorInfo());
+		if ($db->get_count() == -2){
+			echo "登録済みです";
+		}else{
+			echo "追加に失敗しました";
+			var_dump($db->get_exception());
+		}
+
 	}
+
 ?>

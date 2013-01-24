@@ -13,6 +13,10 @@ class DB {
 	private $exception = null;
 	private $errorInfo = null;
 
+//コンストラクタ
+//		PDOオブジェクト作成し$connに代入
+//		引数はすべてdefine.phpで宣言された値を渡すこと
+//		DBアクセスのエラーはすべて例外を発生させる
 	function __construct($dbtype, $host, $dbname, $charset, $user, $pass) {
 		$this->clear_error();
 		$dnsstring = $dbtype . ":host=" . $host . ";dbname=" . $dbname;
@@ -28,6 +32,12 @@ class DB {
 		}
 	}
 
+//デストラクタ
+	function __destruct() {
+       $this->conn = null;
+    }
+
+//ゲッター
 	function get_conn(){
 		return $this->conn;
 	}
@@ -44,6 +54,9 @@ class DB {
 		return $this->errorInfo;
 	}
 
+//query
+//		基本SQL文中に入力値等可変な値がない場合
+//		ある場合は、プレイスフォルダを利用してprepare,exceuteすること
 	function query($sql) {
 		$this->clear_error();
 		try {
@@ -58,8 +71,10 @@ class DB {
 		return $result;
 	}
 
+//prepare
+//		基本は :name形式。? でも可
+// 		成功したらPDOStatementオブジェクト、失敗したらFALSEを返す
 	function prepare($sql) {
-		// 成功したらPDOStatementオブジェクト、失敗したらFALSEを返す
 		$this->clear_error();
 
 		try {
@@ -70,8 +85,11 @@ class DB {
 		}
 	}
 
+//execute
+//		$prepareはプリペアされたPDOStatementオブジェクト、$valuesは$prepareに渡す値の配列
+//		成功したらselect文ならPDOStatementオブジェクト、以外は対象行数
+//		失敗したらFALSEを返す
 	function execute($prepare, $values) {
-		// 成功したら結果セットまたはPDOStatementオブジェクト、失敗したらFALSEを返す
 		$this->clear_error();
 
 		try {
@@ -88,13 +106,17 @@ class DB {
 		}
 	}
 
+//insert
+//		inserはduplicateを認識しないといけないので分けた
+//		重複していたらcountに-2を設定
+//		$sqlはプリペア前のプレイスフォルダ利用のinsert文
+//		$valuesはそれに合わせた値の配列
 	function insert($sql, $values) {
-		//$sqlはプレイスフォルダ利用のinsert文　$valuesはプレイスフォルダに合う値の集合
 		if (($prepare = $this->prepare($sql)) === false) {
 			return false;
 		}
 		if (($result = $this->execute($prepare, $values)) === false) {
-			if ($this->errInfo[1] == 1062) {
+			if ($this->exception->errorInfo[1] == 1062) {	//重複発生
 				$this->count = -2;
 			}
 		}
@@ -102,6 +124,7 @@ class DB {
 		return $result;
 	}
 
+//内部関数
 	private function clear_error() {
 		$this->exception = null;
 		$this->errorInfo = null;
@@ -111,7 +134,7 @@ class DB {
 	private function set_error($e) {
 		$this->exception = $e;
 		if ($this->conn !== null) {
-			$this->errorInfo = $this->conn->errorInfo();
+			$this->errorInfo = $this->exception->errorInfo;
 		}
 		$this->count = -1;
 	}
