@@ -29,6 +29,7 @@ class DB {
 		} catch (Exception $e) {
 			$this->conn = null;
 			$this->set_error($e);
+			throw $e;
 		}
 	}
 

@@ -9,5 +9,6 @@
 <meta charset="UTF-8">
 <title>ログイン成功</title>
 
+<p><?= $errmsg[0] ?><p>
 <p><?= $name ?>さん、いらっしゃい</p>
 <p><a href="login.php">ログアウト</a></p>
